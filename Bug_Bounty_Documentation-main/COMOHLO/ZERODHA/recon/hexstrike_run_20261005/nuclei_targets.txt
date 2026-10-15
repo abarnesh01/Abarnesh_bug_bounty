@@ -1,0 +1,6 @@
+https://varsitylive.zerodha.com
+https://fd.zerodha.com
+https://sensibull.zerodha.com
+https://staging.sensibull.zerodha.com
+https://streak.zerodha.com
+https://smallcase.zerodha.com

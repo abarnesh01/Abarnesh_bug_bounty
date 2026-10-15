@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="cf-rocket-loader" content="manual" />
+  <link rel="icon" href="/assets/favicon-DROLvkiq.png" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-visual" />
+  <title>Invest in Fixed Deposit</title>
+
+  <!-- Preconnect to external domains for faster loading -->
+  <!-- Only use preconnect for critical resources to avoid overhead on mobile -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Font preload with font-display swap for better performance -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  </noscript>
+
+  <!-- DNS prefetch for non-critical resources (lighter than preconnect) -->
+  <link rel="dns-prefetch" href="//api.blostem.com" />
+  <link rel="dns-prefetch" href="//blostem-assets.s3.ap-south-1.amazonaws.com" />
+  <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+
+  <!-- Google Tag Manager - Idle-Until-Urgent Pattern -->
+  <script>
+    // Load GTM using requestIdleCallback for optimal performance
+    // This loads GTM when the browser is idle, without blocking critical rendering
+    function loadGTM() {
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-W2P93KVL');
+    }
+
+    // Use requestIdleCallback if available, with 2s timeout fallback
+    // Otherwise fall back to setTimeout for older browsers
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadGTM, { timeout: 2000 });
+    } else {
+      setTimeout(loadGTM, 2000);
+    }
+  </script>
+  <!-- End Google Tag Manager -->
+  <script type="module" crossorigin src="/assets/index-C4t3wmFA.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/react-core-BB5LWuZz.js">
+  <link rel="modulepreload" crossorigin href="/assets/react-router-BFYFyyKA.js">
+  <link rel="modulepreload" crossorigin href="/assets/forms-GY7o1Jc9.js">
+  <link rel="modulepreload" crossorigin href="/assets/analytics-Bnj06rvM.js">
+  <link rel="modulepreload" crossorigin href="/assets/ui-libs-BH2SqK41.js">
+  <link rel="modulepreload" crossorigin href="/assets/material-tailwind-Dw4GVcsG.js">
+  <link rel="modulepreload" crossorigin href="/assets/moment-B-YVwB4U.js">
+  <link rel="modulepreload" crossorigin href="/assets/lottie-fKbkI_7B.js">
+  <link rel="modulepreload" crossorigin href="/assets/lodash-B16sXR6K.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-BCDc7PAK.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2P93KVL" height="0" width="0"
+      style="display: none; visibility: hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- VisionAI tracker - injected after load so it can never affect boot -->
+  <script>
+    window._visionaiSettings = {
+      apiUrl: 'https://vision.blostem.com',
+      recording: true
+    };
+
+    window.addEventListener('load', function () {
+      var s = document.createElement('script');
+      s.src = 'https://vision.blostem.com/tracker/visionai.min.js';
+      s.async = true;
+      s.onerror = function () {}; // load failure must stay silent
+      document.head.appendChild(s);
+    }, {once: true});
+  </script>
+</body>
+
+</html>
